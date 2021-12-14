@@ -1,0 +1,52 @@
+html, body {
+    box-sizing: border-box;
+    margin: 0;
+    padding: none;
+}
+
+#main{
+    display: flex;
+    margin-top: 50px;
+    align-items: center;
+    justify-content: center;
+}
+
+.title {
+    position: absolute;
+    top: 0;
+    opacity: .2;
+}
+
+.player-board{
+    width: 400px;
+    height: 400px;
+    margin-right: 10px;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    background-color: aqua;
+    cursor: pointer;
+}
+
+.computer-board{
+    width: 400px;
+    height: 400px;
+    margin-left: 10px;
+    background-color: bisque;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    cursor: pointer;
+}
+
+.cell {
+    height: 35px;
+    width: 35px;
+    border: 1px solid black;
+}
+
+.player-board .cell:hover{
+    background-color: aquamarine;
+}
+
+.computer-board .cell:hover{
+    background-color: blanchedalmond;
+}
