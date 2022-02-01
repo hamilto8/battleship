@@ -1,4 +1,5 @@
 const mainDiv = document.getElementById('main');
+const allBoards = document.querySelectorAll('.board');
 
 const shipInfo = [
     {type: 'carrier', length: 5},
@@ -38,8 +39,8 @@ function Gameboard (){
             [], [], [], [], [], [], [], [], [], [],
             [], [], [], [], [], [], [], [], [], []
         ],
-        reveiveAttack(coordX, coordY){
-            if(board[coordX][coordY].dataset.status === 'taken'){
+        reveiveAttack(num){
+            if(board[num].dataset.status === 'taken'){
                 
                 board[coordX][coordY].hit();
             } else{
@@ -50,3 +51,19 @@ function Gameboard (){
 }
 
 const carrier = new Ship(5, 'carrier');
+
+allBoards.forEach(board =>{
+    let count = 0;
+    while(count < 100){
+        const newDiv = document.createElement('div');
+            newDiv.dataset.id = count;
+            newDiv.classList.add('cell');
+            newDiv.addEventListener('click', amClicked)
+            board.appendChild(newDiv);
+        count++;
+    }
+});
+
+function amClicked(e){
+    console.log(`clicked div ${e.target.parentElement.classList} #${e.target.dataset.id}`)
+}

@@ -12,6 +12,7 @@ html, body {
     justify-content: center;
 }
 
+
 .title {
     position: absolute;
     top: 0;
@@ -19,8 +20,8 @@ html, body {
 }
 
 .player-board{
-    width: 400px;
-    height: 400px;
+    /* width: 400px;
+    height: 400px; */
     margin-right: 10px;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
@@ -29,13 +30,22 @@ html, body {
 }
 
 .computer-board{
-    width: 400px;
-    height: 400px;
+    /* width: 400px;
+    height: 400px; */
     margin-left: 10px;
     background-color: bisque;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     cursor: pointer;
+}
+
+.select-ships{
+    /* width: 400px;
+    height: 400px; */
+    background-color: rgb(228, 205, 255);
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    
 }
 
 .cell {
@@ -50,4 +60,24 @@ html, body {
 
 .computer-board .cell:hover{
     background-color: blanchedalmond;
+}
+
+div p{
+    text-align: center;
+}
+
+.board {
+    margin: 20px;
+}
+
+.board div{
+    height: 40px;
+    width: 40px;
+    background-color: cadetblue;
+    border: 1px solid black
+}
+
+.board div:hover{
+cursor: pointer;
+opacity: .5;
 }
