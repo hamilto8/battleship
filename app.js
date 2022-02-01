@@ -12,18 +12,35 @@ function Ship (length, name) {
     return {
         length: length,
         location: [],
+        hits:[],
         sunk: false,
         name: name,
         hit (coordX, coordY){
-
+            console.log(`${this.name} has been hit at ${coordX}, ${coordY}`);
+        },
+        isSunk(){
+            return this.sunk;
         }
     }
 }
 
 function Gameboard (){
-    return{
+    return {
+        board: [
+            [], [], [], [], [], [], [], [], [], [],
+            [], [], [], [], [], [], [], [], [], [],
+            [], [], [], [], [], [], [], [], [], [],
+            [], [], [], [], [], [], [], [], [], [],
+            [], [], [], [], [], [], [], [], [], [],
+            [], [], [], [], [], [], [], [], [], [],
+            [], [], [], [], [], [], [], [], [], [],
+            [], [], [], [], [], [], [], [], [], [],
+            [], [], [], [], [], [], [], [], [], [],
+            [], [], [], [], [], [], [], [], [], []
+        ],
         reveiveAttack(coordX, coordY){
             if(board[coordX][coordY].dataset.status === 'taken'){
+                
                 board[coordX][coordY].hit();
             } else{
                 return false;
@@ -32,3 +49,4 @@ function Gameboard (){
     }
 }
 
+const carrier = new Ship(5, 'carrier');
