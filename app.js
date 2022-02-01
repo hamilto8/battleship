@@ -1,71 +1,34 @@
-const mainDiv = document.querySelector('#main');
-const playerBoard = document.querySelector('.player-board');
-const computerBoard = document.querySelector('.computer-board');
-const shipArr = [];
-const shipClasses = [
-                        ['Carrier', 5], 
-                        ['Battleship', 4], 
-                        ['Cruiser', 3], 
-                        ['Submarine', 3], 
-                        ['Destroyer', 2]
-                    ];
+const mainDiv = document.getElementById('main');
 
-let playerData;
-let computerData;
+const shipInfo = [
+    {type: 'carrier', length: 5},
+    {type: 'battleship', length: 4},
+    {type: 'submarine', length: 3},
+    {type: 'destroyer', length: 2},
+    {type: 'cruiser', length: 3}
+]
 
-function Ship (shipClass, shipLength){
-    const ship = {
-        shipClass,
-        shipLength,
-        hit: (num) =>{
-            // marks position as hit
-            console.log(`Hit part ${num}!`);
-        },
-        isSunk: ()=>{
-            console.log('not sunk');
+function Ship (length, name) {
+    return {
+        length: length,
+        location: [],
+        sunk: false,
+        name: name,
+        hit (coordX, coordY){
+
         }
     }
-    // return ship;
-    shipArr.push(ship);
 }
 
-function Gameboard (player) {
-    const board = {
-        player: player = 'player',
-        receiveAttack: (coords)=>{
-            //check if coords hit a ship
-            if(coords ){
-                //send hit function to that ship
-
+function Gameboard (){
+    return{
+        reveiveAttack(coordX, coordY){
+            if(board[coordX][coordY].dataset.status === 'taken'){
+                board[coordX][coordY].hit();
+            } else{
+                return false;
             }
-            console.log('received')
-        },
-        placeShip: Ship(),
-        missedAttacks: 0,
-        allShipsSunk: false
-    }
-    return board;
-}
-
-shipClasses.forEach((ship)=>{
-    const shipClass = ship[0];
-    const shipLength = ship[1];
-    Ship(shipClass, shipLength);
-});
-
-function setUpCells(board){
-    for(i = 0; i < 100; i++){
-        const cellDiv = document.createElement('div');
-            cellDiv.classList.add('cell');
-            cellDiv.dataset.cell = i;
-            cellDiv.addEventListener('click', cellClicked)
-            board.appendChild(cellDiv);
+        }
     }
 }
 
-setUpCells(playerBoard);
-setUpCells(computerBoard);
-
-function cellClicked(){
-    console.log(this.dataset.cell);
-}
