@@ -9,45 +9,46 @@ const shipInfo = [
     {type: 'cruiser', length: 3}
 ]
 
-function Ship (length, name) {
+function Ship (length, name, location) {
     return {
         length: length,
-        location: [],
+        location: location,
         hits:[],
         sunk: false,
         name: name,
-        hit (coordX, coordY){
-            console.log(`${this.name} has been hit at ${coordX}, ${coordY}`);
+        hit (coord){
+            console.log(`${this.name} has been hit at ${coord}`);
         },
         isSunk(){
-            return this.sunk;
+            this.hits.forEach(hit =>{
+               if(!this.location.includes(hit)){
+                return false;
+               }
+                return true;
+            })
         }
     }
 }
 
 function Gameboard (){
     return {
-        board: [
-            [], [], [], [], [], [], [], [], [], [],
-            [], [], [], [], [], [], [], [], [], [],
-            [], [], [], [], [], [], [], [], [], [],
-            [], [], [], [], [], [], [], [], [], [],
-            [], [], [], [], [], [], [], [], [], [],
-            [], [], [], [], [], [], [], [], [], [],
-            [], [], [], [], [], [], [], [], [], [],
-            [], [], [], [], [], [], [], [], [], [],
-            [], [], [], [], [], [], [], [], [], [],
-            [], [], [], [], [], [], [], [], [], []
-        ],
+        // should be able to place ship by calling ship function
+        placeShip(){
+
+        },
         reveiveAttack(num){
-            if(board[num].dataset.status === 'taken'){
-                
-                board[coordX][coordY].hit();
-            } else{
-                return false;
-            }
+            
+        },
+        missedAttacks: [],
+        allShipsSunk(){
+            return false;
         }
     }
+}
+
+function Player(){
+    let playerTurn = false;
+    let playerBoard = Gameboard();
 }
 
 const carrier = new Ship(5, 'carrier');
