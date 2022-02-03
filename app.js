@@ -46,9 +46,14 @@ function Gameboard (){
     }
 }
 
-function Player(){
-    let playerTurn = false;
-    let playerBoard = Gameboard();
+const Player = {
+    turn: false,
+    board: Gameboard()
+}
+
+const Computer = {
+    turn: true,
+    board: Gameboard()
 }
 
 const carrier = new Ship(5, 'carrier');
