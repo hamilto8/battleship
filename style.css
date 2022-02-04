@@ -83,3 +83,9 @@ div p{
 cursor: pointer;
 opacity: .5;
 }
+
+.cell.carrier {
+    background-color: red;
+    height: 40px;
+    width: 40px;
+}
