@@ -1,0 +1,1 @@
+(()=>{"use strict";new class{constructor(s,t,i){this.length=s,this.numHits=t,this.shipIsSunk=i}hit(){this.numHits+=1}isSunk(){this.length===this.numHits&&(this.shipIsSunk=!0)}}(8,0,!1)})();
