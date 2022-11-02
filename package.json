@@ -1,5 +1,17 @@
 {
+  "name": "battleship",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --watch"
+  },
+  "keywords": [],
+  "author": "Michael Hamilton",
+  "license": "ISC",
   "devDependencies": {
-    "jest": "^27.4.7"
+    "jest": "^27.4.7",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
   }
 }
