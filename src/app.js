@@ -5,7 +5,7 @@ const human = createPlayer("Human");
 const computer = createComputerPlayer();
 
 // populate each player's gameboard with predetermined coordinates for their ships
-
+human.gameboard.placeShips();
 // create a variable to store the current player
 let currentPlayer = human;
 

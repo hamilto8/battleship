@@ -4,8 +4,7 @@ function createPlayer(name) {
   let gameboard = Gameboard();
 
   function attack(enemyGameboard, x, y) {
-    // call the receiveAttack method on the enemey Gameboard with the coordinates (x,y)
-    // return the result
+    enemyGameboard.receiveAttack(x, y);
   }
   return { name, gameboard, attack };
 }
@@ -13,11 +12,12 @@ function createPlayer(name) {
 function createComputerPlayer() {
   let gameboard = Gameboard();
   function attack(enemyGameboard) {
-    // generate random coordinates (x,y) using Math.random()
-    // call the receiveAttack method on the enemy gameboard with the random coordinates
-
-    return { name: "Computer", gameboard, attack };
+    let x = Math.floor(Math.random() * 10);
+    let y = Math.floor(Math.random() * 10);
+    enemyGameboard.receiveAttack(x, y);
   }
+
+  return { name: "Computer", gameboard, attack };
 }
 
 export { createPlayer, createComputerPlayer };
