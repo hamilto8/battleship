@@ -1,17 +1,13 @@
-class Ship {
-  constructor(length, numHits, shipIsSunk) {
-    this.length = length;
-    this.numHits = numHits;
-    this.shipIsSunk = shipIsSunk;
+function Ship(length) {
+  let numHits = 0;
+  let shipIsSunk = false;
+  function hit() {
+    numHits += 1;
   }
-  hit() {
-    this.numHits += 1;
+  function isSunk() {
+    return length === numHits;
   }
-  isSunk() {
-    if (this.length === this.numHits) {
-      this.shipIsSunk = true;
-    }
-  }
+  return { length, numHits, shipIsSunk, hit, isSunk };
 }
 
 export default Ship;
