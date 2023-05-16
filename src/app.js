@@ -1,4 +1,5 @@
 import { createPlayer, createComputerPlayer } from "./Player.js";
+const humanBoard = document.getElementById("human-board");
 
 // create two players: human and computer
 const human = createPlayer("Human");
@@ -6,6 +7,18 @@ const computer = createComputerPlayer();
 
 // populate each player's gameboard with predetermined coordinates for their ships
 human.gameboard.placeShips();
+console.log(human);
+human.gameboard.board.forEach((row) => {
+  row.forEach((square) => {
+    const newSquare = document.createElement("div");
+    newSquare.classList.add("square");
+    if (square.isShip) {
+      newSquare.classList.add("ship");
+    }
+    humanBoard.appendChild(newSquare);
+  });
+});
+
 // create a variable to store the current player
 let currentPlayer = human;
 

@@ -1,4 +1,6 @@
 import Gameboard from "./Gameboard";
+const humanBoard = document.getElementById("human-board");
+const computerBoard = document.getElementById("computer-board");
 
 function createPlayer(name) {
   let gameboard = Gameboard();

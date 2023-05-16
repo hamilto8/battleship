@@ -1,11 +1,16 @@
 import Ship from "./Ship";
+
 function Gameboard() {
   let missedAttacks = [];
   let ships = [];
-  let board = [[], [], [], [], [], [], [], [], [], []];
+  let board = new Array(10);
 
-  for (let i = 0; i < 10; i++) {
-    for (let j = 0; j < 10; j++) {
+  for (let i = 0; i < board.length; i++) {
+    board[i] = new Array(10);
+  }
+
+  for (let i = 0; i < board.length; i++) {
+    for (let j = 0; j < board.length; j++) {
       board[i][j] = { isShip: false, isAttacked: false };
     }
   }
@@ -43,24 +48,37 @@ function Gameboard() {
     for (const [type, length] of Object.entries(shipTypes)) {
       // prompt player to place ship of given type
       // call placeShip function with given length, coordinates, and orientation
-      const ship = Ship(length);
+      const ship = Ship(length, type);
       ships.push(ship);
       let x = parseInt(prompt(`Enter x coordinate for ${type}`));
       let y = parseInt(prompt(`Enter y coordinate for ${type}`));
-      let orientation = prompt(`Enter orientation for ${type}`);
+      let getOrientation = () => {
+        let direction = prompt(`Enter orientation for ${type}`);
+        if (direction !== "horizontal" && direction !== "vertical") {
+          alert("Invalid orientation. Please enter horizontal or vertical.");
+          // getOrientation();
+        } else {
+          return direction;
+        }
+      };
+
+      let orientation = getOrientation();
+
       while (!isValidPlacement(x, y, length, orientation)) {
         alert("Invalid placement. Please enter new coordinates.");
         x = parseInt(prompt(`Enter x coordinate for ${type}`));
         y = parseInt(prompt(`Enter y coordinate for ${type}`));
-        orientation = prompt(`Enter orientation for ${type}`);
+        orientation = getOrientation();
       }
       if (orientation === "horizontal") {
         for (let i = x; i < x + length; i++) {
+          ship.hitLocations.push({ x: i, y });
           board[i][y].isShip = true;
           board[i][y].ship = ship;
         }
       } else if (orientation === "vertical") {
         for (let i = y; i < y + length; i++) {
+          ship.hitLocations.push({ x, y: i });
           board[x][i].isShip = true;
           board[x][i].ship = ship;
         }
@@ -85,6 +103,6 @@ function Gameboard() {
     // return true or false
     return ships.every((ship) => ship.isSunk());
   }
-  return { missedAttacks, ships, placeShips, receiveAttack, allSunk };
+  return { missedAttacks, ships, board, placeShips, receiveAttack, allSunk };
 }
 export default Gameboard;
