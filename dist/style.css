@@ -31,8 +31,22 @@
   height: 500px;
 }
 
-.square.ship {
+#computer-board {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  width: 500px;
+  height: 500px;
+}
+
+#human-board .square.ship {
   background-color: blue;
+  height: 50px;
+  width: 50px;
+}
+
+#computer-board .square.ship {
+  background-color: rgb(130, 0, 137);
   height: 50px;
   width: 50px;
 }
@@ -49,6 +63,32 @@
   margin: auto;
 }
 
+#computer-board .square.hit,
+#human-board .square.hit {
+  background-color: red;
+}
+
 .square:hover {
   background-color: rgb(202, 202, 202);
+}
+
+.bottom-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.start-game {
+  height: 30px;
+  border-radius: 5px;
+  background-color: rgb(200, 141, 255);
+}
+
+#message {
+  width: 50vw;
+  height: 30px;
+  background-color: rgb(255, 107, 255);
 }

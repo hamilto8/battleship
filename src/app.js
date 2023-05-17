@@ -1,23 +1,60 @@
 import { createPlayer, createComputerPlayer } from "./Player.js";
+
 const humanBoard = document.getElementById("human-board");
+const computerBoard = document.getElementById("computer-board");
+const startGameButton = document.querySelector(".start-game");
+const messageDiv = document.querySelector("#message");
 
 // create two players: human and computer
 const human = createPlayer("Human");
 const computer = createComputerPlayer();
 
 // populate each player's gameboard with predetermined coordinates for their ships
-human.gameboard.placeShips();
-console.log(human);
-human.gameboard.board.forEach((row) => {
-  row.forEach((square) => {
-    const newSquare = document.createElement("div");
-    newSquare.classList.add("square");
-    if (square.isShip) {
-      newSquare.classList.add("ship");
-    }
-    humanBoard.appendChild(newSquare);
+// human.gameboard.placeShips();
+
+startGameButton.addEventListener("click", () => {
+  human.gameboard.placeShips(false);
+  computer.gameboard.placeShips(true);
+
+  // Render the human player's board
+  human.gameboard.board.forEach((row, rowIndex) => {
+    row.forEach((square, colIndex) => {
+      const newSquare = document.createElement("div");
+      newSquare.classList.add("square");
+      if (square.isShip) {
+        newSquare.classList.add("ship");
+      }
+      newSquare.dataset.x = rowIndex;
+      newSquare.dataset.y = colIndex;
+      newSquare.addEventListener("click", (e) => {
+        console.log("clicked " + e.target.dataset.x, e.target.dataset.y);
+      });
+      humanBoard.appendChild(newSquare);
+    });
+  });
+
+  // Render the computer player's board
+  computer.gameboard.board.forEach((row, rowIndex) => {
+    row.forEach((square, colIndex) => {
+      const newSquare = document.createElement("div");
+      newSquare.classList.add("square");
+      if (square.isShip) {
+        newSquare.classList.add("ship");
+      }
+      newSquare.dataset.x = rowIndex;
+      newSquare.dataset.y = colIndex;
+      newSquare.addEventListener("click", () => {
+        console.log(
+          "Computer was clicked at " + newSquare.dataset.x,
+          newSquare.dataset.y
+        );
+      });
+      computerBoard.appendChild(newSquare);
+    });
   });
 });
+
+console.log(human);
 
 // create a variable to store the current player
 let currentPlayer = human;
@@ -38,11 +75,32 @@ function switchPlayer() {
 function gameOver() {
   // check if either player's gameboard is all sunk using the allSunk method
   // if yes, set gameOn to false and display a message to indicate who won or lost
+  let enemyGameboard;
+  if (currentPlayer === human) {
+    enemyGameboard = computer.gameboard;
+  } else {
+    enemyGameboard = human.gameboard;
+  }
+  const allSunk = enemyGameboard.allSunk();
+  if (allSunk) {
+    gameOn = false;
+    if (currentPlayer === human) {
+      if (currentPlayer === human) {
+        messageDiv.textContent = "You win!";
+      }
+      console.log("You win!");
+    } else {
+      if (currentPlayer === computer) {
+        messageDiv.textContent = "You lose!";
+      }
+      console.log("You lose!");
+    }
+  }
 }
 
 // create a function to handle the attack logic
 function attackLogic(X, Y) {
-  // get the enemy gameboard based on the current player
+  // Get the enemy gameboard based on the current player
   let enemyGameboard;
   if (currentPlayer === human) {
     enemyGameboard = computer.gameboard;
@@ -50,17 +108,54 @@ function attackLogic(X, Y) {
     enemyGameboard = human.gameboard;
   }
 
-  // call the attack method on the current player with the enemy gameboard and the coordinates
-  currentPlayer.attack(enemyGameboard, X, Y);
+  // Call the receiveAttack method on the enemy gameboard with the coordinates
+  // enemyGameboard.receiveAttack(X, Y);
 
-  // check if the attack hit or missed a ship using the missedAttacks array on the enemy gameboard
-  // display a message to indicate the result of the attack
+  // Check if the attack hit or missed a ship using the isShip property on the board square
+  const square = enemyGameboard.board[X][Y];
+  if (square.isShip) {
+    // Increase the numHits property of the ship on the square
+    square.ship.numHits++;
 
-  // check if the game is over using the gameOver function
+    // Color the square red to indicate a hit
+    // const squareElement = document.querySelector(
+    //   `[data-x="${X}"][data-y="${Y}"]`
+    // );
+    // squareElement.style.backgroundColor = "red";
 
-  // if not over, switch the current player using the switchPlayer function
+    // Check if the ship is sunk
+    //   if (square.ship.isSunk()) {
+    //     // Display a message indicating that the ship has been sunk
+    //     console.log(`You sunk the ${square.ship.type}!`);
+    //   } else {
+    //     // Display a message indicating a hit
+    //     console.log("You hit a ship!");
+    //   }
+    // } else {
+    //   // Color
+    // Color the square gray to indicate a missed attack
+    //   const squareElement = document.querySelector(
+    //     `[data-x="${X}"][data-y="${Y}"]`
+    //   );
+    //   squareElement.style.backgroundColor = "gray";
 
-  // if the current player is computer, call the attackLogic function with random coordinates
+    //   // Display a message indicating a missed attack
+    //   console.log("You missed!");
+    // }
+
+    // Check if the game is over using the gameOver function
+    gameOver();
+
+    // If not over, switch the current player using the switchPlayer function
+    // switchPlayer();
+
+    // If the current player is computer, call the attackLogic function with random coordinates
+    if (currentPlayer === computer) {
+      const randomX = Math.floor(Math.random() * 10);
+      const randomY = Math.floor(Math.random() * 10);
+      attackLogic(randomX, randomY);
+    }
+  }
 }
 
 // create a module for DOM interaction
@@ -84,8 +179,26 @@ const DOMModule = (() => {
     let X = event.target.dataset.x;
     let Y = event.target.dataset.y;
 
+    // check if there is a ship at square
+    const square = computer.gameboard.board[X][Y];
+
+    if (square.isShip) {
+      const ship = square.ship;
+      if (ship.numHits < ship.length) {
+        square.ship.numHits++;
+      } else if (ship.numHits === ship.length) {
+        alert("You sunk the " + ship.type + "!");
+      }
+      event.target.classList.add("hit");
+      console.log(`Ship: ${ship.type} was hit!`);
+      console.log(`Length of ship: ${ship.length}`);
+      console.log(`Number of hits: ${ship.numHits}`);
+      // Increase the numHits property of the ship on the square
+      gameOver();
+      attackLogic(X, Y);
+    }
     // call the attackLogic function with those coordinates
-    attackLogic(X, Y);
+    // attackLogic(Number(X), Number(Y));
   }
 
   // add an event listener to each square on the computer board using handleClick as callback

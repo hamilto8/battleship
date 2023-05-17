@@ -23,6 +23,19 @@ function Gameboard() {
     destroyer: 2,
   };
 
+  function getOrientation() {
+    const type = Object.keys(shipTypes)[ships.length];
+    let direction = prompt(`Enter orientation for ${type}`);
+    if (direction !== "horizontal" && direction !== "vertical") {
+      alert("Invalid orientation. Please enter horizontal or vertical.");
+      return getOrientation();
+    } else {
+      return direction;
+    }
+  }
+
+  // let orientation = getOrientation();
+
   function isValidPlacement(x, y, length, orientation) {
     if (orientation === "horizontal") {
       if (x + length > board.length) return false;
@@ -42,34 +55,38 @@ function Gameboard() {
     return true;
   }
 
-  function placeShips() {
-    // create a ship object using createShip
-    // add it to the ships array
+  function placeShips(isComputerPlayer) {
+    const shipTypes = {
+      carrier: 5,
+      battleship: 4,
+      cruiser: 3,
+      submarine: 3,
+      destroyer: 2,
+    };
+
     for (const [type, length] of Object.entries(shipTypes)) {
-      // prompt player to place ship of given type
-      // call placeShip function with given length, coordinates, and orientation
-      const ship = Ship(length, type);
-      ships.push(ship);
-      let x = parseInt(prompt(`Enter x coordinate for ${type}`));
-      let y = parseInt(prompt(`Enter y coordinate for ${type}`));
-      let getOrientation = () => {
-        let direction = prompt(`Enter orientation for ${type}`);
-        if (direction !== "horizontal" && direction !== "vertical") {
-          alert("Invalid orientation. Please enter horizontal or vertical.");
-          // getOrientation();
-        } else {
-          return direction;
-        }
-      };
-
-      let orientation = getOrientation();
-
-      while (!isValidPlacement(x, y, length, orientation)) {
-        alert("Invalid placement. Please enter new coordinates.");
+      let x, y, orientation;
+      if (isComputerPlayer) {
+        do {
+          x = Math.floor(Math.random() * 10);
+          y = Math.floor(Math.random() * 10);
+          orientation = Math.random() < 0.5 ? "horizontal" : "vertical";
+        } while (!isValidPlacement(x, y, length, orientation));
+      } else {
         x = parseInt(prompt(`Enter x coordinate for ${type}`));
         y = parseInt(prompt(`Enter y coordinate for ${type}`));
         orientation = getOrientation();
+        while (!isValidPlacement(x, y, length, orientation)) {
+          alert("Invalid placement. Please enter new coordinates.");
+          x = parseInt(prompt(`Enter x coordinate for ${type}`));
+          y = parseInt(prompt(`Enter y coordinate for ${type}`));
+          orientation = getOrientation();
+        }
       }
+
+      const ship = Ship(length, type);
+      ships.push(ship);
+
       if (orientation === "horizontal") {
         for (let i = x; i < x + length; i++) {
           ship.hitLocations.push({ x: i, y });
@@ -84,8 +101,6 @@ function Gameboard() {
         }
       }
     }
-
-    // check if the placement is valid within the board and not overlapping with another ship
   }
 
   function receiveAttack(x, y) {
