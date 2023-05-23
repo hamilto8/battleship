@@ -176,29 +176,45 @@ const DOMModule = (() => {
   // create a function to handle user input when clicking on a square on the computer board
   function handleClick(event) {
     // get the coordinates of the clicked square from its data attributes
-    let X = event.target.dataset.x;
-    let Y = event.target.dataset.y;
+    const X = event.target.dataset.x;
+    const Y = event.target.dataset.y;
 
-    // check if there is a ship at square
+    // check if the square has already been attacked
     const square = computer.gameboard.board[X][Y];
+    if (square.isAttacked) {
+      return;
+    }
 
+    // mark the square as attacked
+    square.isAttacked = true;
+
+    // check if there is a ship at the square
     if (square.isShip) {
       const ship = square.ship;
-      if (ship.numHits < ship.length) {
-        square.ship.numHits++;
-      } else if (ship.numHits === ship.length) {
-        alert("You sunk the " + ship.type + "!");
+      if (ship.isSunk()) {
+        console.log(`The ${ship.type} is already sunk!`);
+        return;
       }
-      event.target.classList.add("hit");
-      console.log(`Ship: ${ship.type} was hit!`);
-      console.log(`Length of ship: ${ship.length}`);
-      console.log(`Number of hits: ${ship.numHits}`);
+
       // Increase the numHits property of the ship on the square
-      gameOver();
-      attackLogic(X, Y);
+      ship.hit();
+
+      if (ship.isSunk()) {
+        console.log(`You sunk the ${ship.type}!`);
+      } else {
+        console.log(`You hit the ${ship.type}!`);
+      }
+
+      // Update the UI to display the hit square
+      event.target.classList.add("hit");
+    } else {
+      console.log("You missed!");
+      // Update the UI to display the missed square
+      event.target.classList.add("miss");
     }
-    // call the attackLogic function with those coordinates
-    // attackLogic(Number(X), Number(Y));
+
+    // Call the attackLogic function with the coordinates
+    attackLogic(Number(X), Number(Y));
   }
 
   // add an event listener to each square on the computer board using handleClick as callback
