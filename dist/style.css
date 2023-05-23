@@ -68,10 +68,6 @@
   background-color: red;
 }
 
-.square:hover {
-  background-color: rgb(202, 202, 202);
-}
-
 .bottom-panel {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -91,4 +87,8 @@
   width: 50vw;
   height: 30px;
   background-color: rgb(255, 107, 255);
+}
+
+.miss {
+  background-color: purple;
 }

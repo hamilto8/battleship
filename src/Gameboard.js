@@ -56,13 +56,13 @@ function Gameboard() {
   }
 
   function placeShips(isComputerPlayer) {
-    const shipTypes = {
-      carrier: 5,
-      battleship: 4,
-      cruiser: 3,
-      submarine: 3,
-      destroyer: 2,
-    };
+    // const shipTypes = {
+    //   carrier: 5,
+    //   battleship: 4,
+    //   cruiser: 3,
+    //   submarine: 3,
+    //   destroyer: 2,
+    // };
 
     for (const [type, length] of Object.entries(shipTypes)) {
       let x, y, orientation;
@@ -87,30 +87,48 @@ function Gameboard() {
       const ship = Ship(length, type);
       ships.push(ship);
 
+      // ...
+
       if (orientation === "horizontal") {
         for (let i = x; i < x + length; i++) {
-          ship.hitLocations.push({ x: i, y });
+          ship.hitLocations[i - x] = { x: i, y, isHit: false };
           board[i][y].isShip = true;
           board[i][y].ship = ship;
         }
       } else if (orientation === "vertical") {
         for (let i = y; i < y + length; i++) {
-          ship.hitLocations.push({ x, y: i });
+          ship.hitLocations[i - y] = { x, y: i, isHit: false };
           board[x][i].isShip = true;
           board[x][i].ship = ship;
         }
       }
+
+      // ...
     }
   }
+
+  // ...
 
   function receiveAttack(x, y) {
     board[x][y].isAttacked = true;
     if (board[x][y].isShip) {
-      board[x][y].ship.hit();
+      // Get the location on the ship that was hit
+      const hitLocation = board[x][y].ship.hitLocations.find(
+        (location) => location.x === x && location.y === y
+      );
+      // Call hit() on the Ship object with the hit location
+      board[x][y].ship.hit(hitLocation);
+
+      // Check if the ship was sunk
+      if (board[x][y].ship.isSunk()) {
+        console.log(`A ${board[x][y].ship.type} was sunk!`);
+      }
     } else {
       missedAttacks.push({ x, y });
     }
   }
+
+  // ...
 
   function allSunk() {
     // loop through the ships array
