@@ -1,17 +1,25 @@
 {
   "name": "battleship",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
+  "type": "module",
+  "description": "A modern game of Battleship (player vs computer or local pass-and-play) built with Vite + TypeScript.",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --watch"
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
   },
-  "keywords": [],
+  "keywords": ["battleship", "game", "typescript", "vite"],
   "author": "Michael Hamilton",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^27.4.7",
-    "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0"
+    "@types/node": "^20.14.0",
+    "jsdom": "^24.1.0",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.0",
+    "vitest": "^2.0.5"
   }
 }
